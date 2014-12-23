@@ -1,0 +1,52 @@
+This contains ALL of the illumos repositories and related projects. It is
+essentially read-only and not intended for building and/or compilation. It is
+to be used to analysis of commit activity and so forth.
+
+This is a framework for downloading illumos-related repositories from git-hub,
+and doing data analysis on the commit-logs of those repositories. There is a
+surprising amount of information in those logs.
+
+To use for first time:
+
+
+cd tools
+./get_repos.ksh
+# This generates elaborate git-logs in JSON format in the ../data directory
+# You'll figure it out.
+./commit_jlogs.ksh
+
+
+To update the repos:
+
+cd tools
+./pull_repos.ksh
+./commit_jlogs.ksh
+
+To get some stats:
+
+cd tools
+Rscript stats.R ../data/commit_logs/kernels/illumos-gate > OUTPUT_FILE
+
+The stat-getting is going to be automated and parallelized by the script
+repo_stats.ksh, but hasn't been implemented/tested yet. Use at your own risk.
+
+If something doesn't work, please open an issue on github, or email me at
+zivkovic.nick@gmail.com
+
+If you are the owner of an Illumos-related repo, please send me an email or
+open an issue to have your project's repo included in the data. Illumos-related
+repos are anything. Even userland code that depends on or leverages
+Illumos-specific facilities (for example the DTraceToolkit or even Joyent's
+Manta). The more data the better.
+
+Future work may include fetching the mailing list data for every
+illumos-related mailing-list and doing some kind of (as of yet unknown)
+analysis on this data. For example, I want to see if there is a correlation
+between commit-activity and email-activity. Also, I suspect, but would like to
+verify/falsify that the most political and opinionated mailing-list posts are
+more likely to be written by people that have zero or close to zero commits in
+the kernel repos (and other related repos perhaps).
+
+Special thanks to Mike Dimitropoulos (sdimitro on github) for suggesting this
+side-project which was a breath of fresh air, from the more sophisticated stuff
+I work on.
