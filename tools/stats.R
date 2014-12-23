@@ -93,19 +93,40 @@ len <- nrow(commit_data)
 # We should also partition all the file-counts by year. We want a list of lists
 # that is indexed by year.
 #
-# XXX this function still has some runtime errors and so it doesn't work yet.
+# TODO: this function is extremely slow. Should find a way to make it faster.
+# Off the top of my head, we can split it into multiple functions -- 1 for each
+# file_mods_* list, defined above. Then we can run _different_ scripts, in
+# parallel. This way which-ever part is faster can finish first.
 
 file_count <- function()
 {
-	# newstr <- gsub("/", ";", str);
 	for (i in 1:len) {
-		# this is the number of rows, all columns have same nrows
+
+		# This is the number of rows, all columns have same nrows.  As
+		# it turns out, statlen can end up being NULL, instead of 0, so
+		# we have to check for it before the j-loop below.
 		statlen <- nrow(commit_data$stat[[i]]);
+		#print("len");
+		#print(len);
+		#print("statlen");
+		#print(statlen);
+		#print("i");
+		#print(i);
 		time <- strptime(commit_data$commitDate[[i]],
 		    "%Y-%m-%d %H:%M:%S %z");
 		year <- strftime(time, "%Y");
+		# We don't care about commits before the purge
+		if (time < order_66) {
+			break;
+		}
+
 		author <- commit_data$author[[i]];
 		author <- normalize_author(author);
+
+		# If there are no file stats we can skip the j-loop this time.
+		if (is.null(statlen) || statlen == 0) {
+			next;
+		}
 		for (j in 1:statlen) {
 			# this is the number of rows
 			ins <- as.numeric(commit_data$stat[[i]][[1]][[j]]);
@@ -127,6 +148,11 @@ file_count <- function()
 				file_mods_ln[[ path ]] <<-
 				    file_mods_ln[[ path ]] + ins + del;
 			}
+			# We skip this part, for now, since it is slowing us
+			# down.
+			if (FALSE) {
+				next;
+			}
 			# then we set the author
 			# Each path has a list of authors
 			# If this is null then so is the main mods_at list
@@ -146,6 +172,34 @@ file_count <- function()
 			auths <- length(file_mods_at_aux1[[ path ]]);
 			file_mods_at[[ path ]] <<- auths;
 		}
+	}
+}
+
+print_file_mods_ct <- function()
+{
+	len <- length(file_mods_ct);
+	for (i in 1:len) {
+		keys <- names(file_mods_ct)
+		path <- keys[i];
+		path <- noquote(path);
+		commits <- file_mods_ct[[path]];
+		line <- paste(path, commits, sep=" ");
+		cat(noquote(line));
+		cat("\n");
+	}
+}
+
+print_file_mods_ln <- function()
+{
+	len <- length(file_mods_ln);
+	for (i in 1:len) {
+		keys <- names(file_mods_ln)
+		path <- keys[i];
+		path <- noquote(path);
+		lines <- file_mods_ln[[path]];
+		line <- paste(path, lines, sep=" ");
+		cat(noquote(line));
+		cat("\n");
 	}
 }
 
@@ -505,9 +559,40 @@ new_guard_vs_old_guard <- function()
 	print(ftbl_acom);
 }
 
+#
+# This loads all of the data into memory.
+#
 initialize();
+#
+# This counts the number of times a file was 'touched', where 'touched' means
+# 1) has a commit associated with it, 2) has had a line changed, or 3) has had
+# a unique, distinct author modify it. Number 3) isn't fully implemented yet.
+# Uncomment file_count() and any _single_ one of the print_file_mods_*()
+# functions to use (EXCEPT for print_file_mods_at(), which is not implemented
+# yet).
+#
+
 #file_count();
-new_guard_vs_old_guard();
+#print_file_mods_ct();
+#print_file_mods_ln();
+#print_file_mods_at();
+
+#
+# This compares the New Guard of committers that are replacing what's left of
+# the Old Guard of commiters. Anyone who has made their first commit _after_
+# the closing of the OpenSolaris source code is considered a member of the New
+# Guard (for example Mustacchi, Sipek, and Pankov). This function prints out
+# the entire roster of the New Guard and the number of commits they have made.
+# It also prints out a frequency distribution of the number of commits made by
+# individuals. I'll save you the suspense and tell you that it looks like a
+# Pareto distribution, and coincides nearly perfectly with Price's Law. (25% of
+# New Guard, contribute 75% of commits. 10% of New Guard, contribute 50% of
+# commits.  You'll see :) Prints the same things for every contributor ever.
+# Feel free to comment out statistics from the new_guard_vs_old_guard()
+# function, if you don't need them -- or to add new ones.
+#
+
+#new_guard_vs_old_guard();
 
 
 #print(newguard);

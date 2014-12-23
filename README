@@ -27,6 +27,13 @@ To get some stats:
 cd tools
 Rscript stats.R ../data/commit_logs/kernels/illumos-gate > OUTPUT_FILE
 
+To get different stats, you'll have change the source (for now). Near the
+bottom of the file are some commented-out lines of code. Uncomment the
+appropriate ones for the kinds of stats you're looking for. If you don't do
+this, nothing will be printed out. My profuse apologies in advance, for the
+lack of command line switches or a config file. I'll change this as soon as
+possible.
+
 The stat-getting is going to be automated and parallelized by the script
 repo_stats.ksh, but hasn't been implemented/tested yet. Use at your own risk.
 
