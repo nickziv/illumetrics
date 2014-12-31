@@ -1,0 +1,16 @@
+git://github.com/joyent/muppet.git
+git://github.com/joyent/manta-muskie.git
+git://github.com/joyent/mahi
+git://github.com/joyent/manta-medusa.git
+git://github.com/joyent/manatee
+git://github.com/joyent/moray
+git://github.com/joyent/electric-moray.git
+git://github.com/joyent/manta-mako.git
+git://github.com/joyent/manta-marlin.git
+git://github.com/joyent/manta-wrasse.git
+git://github.com/joyent/binder.git
+git://github.com/joyent/manta-mola.git
+git://github.com/joyent/manta-mackerel.git
+git://github.com/joyent/manta-madtom.git
+git://github.com/joyent/manta-marlin-dashboard.git
+git://github.com/joyent/manta-minnow.git
