@@ -45,6 +45,7 @@ file_mods_ln_yr <- list();
 file_mods_ct_yr <- list();
 file_mods_at_yr <- list();
 
+
 # This date is important. It is the data at which the Illumos project was
 # started.
 first_illumos_commit <- as.POSIXct("2010-07-29 16:07:59");
@@ -54,6 +55,7 @@ first_illumos_commit <- as.POSIXct("2010-07-29 16:07:59");
 order_66 <- as.POSIXct("2010-10-13 00:00:00");
 args <- commandArgs(trailingOnly = TRUE);
 json_log_file <- args[1];
+author_query <- args[2];
 commit_data <- fromJSON(json_log_file);
 len <- nrow(commit_data)
 #commitDate is column 6.
@@ -150,9 +152,9 @@ file_count <- function()
 			}
 			# We skip this part, for now, since it is slowing us
 			# down.
-			if (FALSE) {
-				next;
-			}
+			#if (TRUE) {
+				#next;
+			#}
 			# then we set the author
 			# Each path has a list of authors
 			# If this is null then so is the main mods_at list
@@ -200,6 +202,30 @@ print_file_mods_ln <- function()
 		line <- paste(path, lines, sep=" ");
 		cat(noquote(line));
 		cat("\n");
+	}
+}
+
+print_file_mods_at <- function()
+{
+	len <- length(file_mods_at);
+	for (i in 1:len) {
+		keys <- names(file_mods_at)
+		path <- keys[i];
+		path <- noquote(path);
+		lines <- file_mods_at[[path]];
+		line <- paste(path, lines, sep=" ");
+		cat(noquote(line));
+		cat("\n");
+	}
+}
+
+print_author_paths <- function()
+{
+	path_list <- file_mods_at_aux2[[ author_query ]];
+	keys <- names(path_list);
+	len <- length(path_list);
+	for (i in 1:len) {
+		print(keys[i]);
 	}
 }
 
@@ -558,24 +584,6 @@ new_guard_vs_old_guard <- function()
 	ftbl_acom <- table(all_ncommits);
 	print(ftbl_acom);
 }
-
-#
-# This loads all of the data into memory.
-#
-initialize();
-#
-# This counts the number of times a file was 'touched', where 'touched' means
-# 1) has a commit associated with it, 2) has had a line changed, or 3) has had
-# a unique, distinct author modify it. Number 3) isn't fully implemented yet.
-# Uncomment file_count() and any _single_ one of the print_file_mods_*()
-# functions to use (EXCEPT for print_file_mods_at(), which is not implemented
-# yet).
-#
-
-#file_count();
-#print_file_mods_ct();
-#print_file_mods_ln();
-#print_file_mods_at();
 
 #
 # This compares the New Guard of committers that are replacing what's left of
