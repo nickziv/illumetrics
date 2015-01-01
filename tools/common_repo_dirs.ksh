@@ -32,45 +32,20 @@ cloud=$root/cloud/
 #distributed storage stuff built on illumos
 dstor=$root/dstor/
 
+krepo=( $(ls $kernels) )
+nkrepo=${#krepo[@]}
 
-krepo[0]="illumos-gate"
-krepo[1]="illumos-joyent"
-krepo[2]="delphix-os"
-krepo[3]="illumos-nexenta"
-krepo[4]="illumos-omnios"
-nkrepo=4
+brepo=( $(ls $buildsystems) )
+nbrepo=${#brepo[@]}
 
-brepo[0]="omnios-build"
-brepo[1]="smartos-live"
-nbrepo=1
+vrepo=( $(ls $virtualization) )
+nvrepo=${#vrepo[@]}
 
-vrepo[0]="illumos-kvm"
-nvrepo=0
+urepo=( $(ls $userland) )
+nurepo=${#urepo[@]}
 
-urepo[0]="illumos-extra"
-urepo[1]="nza-userland"
-urepo[2]="illumos-userland"
-nurepo=2
+ccrepo=( $(ls $cc) )
+nccrepo=${#ccrepo[@]}
 
-ccrepo[0]="gcc"
-nccrepo=0
-
-#Start with Joyent MANTA stuff.
-#Should probably break it distill this list later
-dsrepo[0]="muppet"
-dsrepo[1]="manta-muskie"
-dsrepo[2]="mahi"
-dsrepo[3]="manta-medusa"
-dsrepo[4]="manatee"
-dsrepo[5]="moray"
-dsrepo[6]="electric-moray"
-dsrepo[7]="manta-mako"
-dsrepo[8]="manta-marlin"
-dsrepo[9]="manta-wrasse"
-dsrepo[10]="binder"
-dsrepo[11]="manta-mola"
-dsrepo[12]="manta-mackerel"
-dsrepo[13]="manta-madtom"
-dsrepo[14]="manta-marlin-dashboard"
-dsrepo[15]="manta-minnow"
-ndsrepo=15
+dsrepo=( $(ls $dstor) )
+ndsrepo=${#dsrepo[@]}
