@@ -16,6 +16,8 @@
 
 root=$(pwd)/../
 tools=$root/tools
+configs=$root/configs
+
 #illumos kernel branches
 kernels=$root/kernels/
 #illumos build systems
