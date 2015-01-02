@@ -19,34 +19,11 @@
 source ./common_dirs.ksh
 source ./common_repo_dirs.ksh
 
-
-for i in {0..$nkrepo}; do;
-	mkdir $stats/kernels
-	$tools/stats.R $commit_logs/kernels/${krepo[$i]} > $stats/kernels/${krepo[$i]} &
-done
-
-
-for i in {0..$nbrepo}; do;
-	mkdir $stats/buildsystems
-	$tools/stats.R $commit_logs/buildsystems/${brepo[$i]}> $stats/buildsystems/${brepo[$i]} &
-done
-
-
-for i in {0..$nvrepo}; do;
-	mkdir $stats/virtualization
-	$tools/stats.R $commit_logs/virtualization/${vrepo[$i]} > $stats/virtualization/${vrepo[$i]} &
-done
-
-
-for i in {0..$nurepo}; do;
-	mkdir $stats/userland
-	$tools/stats.R $commit_logs/userland/${urepo[$i]} > $stats/userland/${urepo[$i]} &
-done
-
-
-for i in {0..$ndsrepo}; do;
-	mkdir $stats/dstor
-	$tools/stats.R $commit_logs/userland/${dsrepo[$i]}> $stats/dstor/${dsrepo[$i]} &
+for index in ${!dirs[@]}; do
+	for repo in ${dirs[$index][@]}; do
+		mkdir $stats/$index
+		$tools/stats.R $commit_logs/$index/$repo > $stats/$index/$repo &
+	done
 done
 
 #
