@@ -31,10 +31,7 @@ for index in ${!dirs[@]}; do
 
 		$tools/git_log_json.ksh > $commit_logs/$index/${repo}_log &
  		$tools/git_log_numstat_json.ksh > $commit_logs/$index/${repo}_numstat &
-
-		break
 	done
-	break
 done
 
 #
@@ -52,10 +49,7 @@ for index in ${!dirs[@]}; do
 		node $tools/merge.js $commit_logs/$index/${repo}_log \
 			$commit_logs/$index/${repo}_numstat > \
 			$commit_logs/$index/${repo} &
-
-		break
 	done
-	break
 done
 
 wait
@@ -71,8 +65,5 @@ for index in ${!dirs[@]}; do
 
 		rm $commit_logs/$index/${repo}_log
 		rm $commit_logs/$index/${repo}_numstat
-
-		break
 	done
-	break
 done
