@@ -22,8 +22,8 @@ configs=$root/configs
 # The following loop creates an associative array of the
 # following structure:
 # dirs["compiler"][0] -> "gcc"
-# dirs["kernel"][0]  -> "illumos-gate"
-# dirs["kernel"][1]  -> "illumos-core"
+# dirs["kernel"][0]   -> "illumos-gate"
+# dirs["kernel"][1]   -> "illumos-core"
 # etc...
 #
 typeset -A dirs

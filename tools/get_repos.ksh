@@ -16,49 +16,19 @@
 #
 
 source ./common_dirs.ksh
+source ./common_repo_dirs.ksh
 
-mkdir $kernels
-mkdir $buildsystems
-mkdir $virtualization
-mkdir $userland
-#mkdir $docs
-mkdir $cc
-mkdir $dstor
 mkdir $data
 mkdir $commit_logs
 
-cd $kernels
-for i in $(cat ${configs}/krepo.list); do
-	git clone $i & 2> /dev/null
-done
-wait
+for index in "${!dirs[@]}"; do
+	list_file=${index}.list
+	full_path=$root/$index
 
-cd $buildsystems
-for i in $(cat ${configs}/brepo.list); do
-	git clone $i & 2> /dev/null
+	mkdir $full_path
+	cd $full_path
+	for i in $(cat ${configs}/$list_file); do
+		git clone $i & 2> /dev/null
+	done
+	wait
 done
-wait
-
-cd $virtualization
-for i in $(cat ${configs}/vrepo.list); do
-	git clone $i & 2> /dev/null
-done
-wait
-
-cd $userland
-for i in $(cat ${configs}/urepo.list); do
-	git clone $i & 2> /dev/null
-done
-wait
-
-cd $cc
-for i in $(cat ${configs}/ccrepo.list}); do
-	git clone $i & 2> /dev/null
-done
-wait
-
-cd $dstor
-for i in $(cat ${configs}/dsrepo.list); do
-	git clone $i & 2> /dev/null
-done
-wait
