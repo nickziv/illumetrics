@@ -8,6 +8,7 @@
 
 #
 # Copyright (c) 2014, Nick Zivkovic
+# Copyright (c) 2014, Serapheim Dimitropoulos
 #
 
 
@@ -18,42 +19,10 @@
 source ./common_dirs.ksh
 source ./common_repo_dirs.ksh
 
-
-for i in {0..$nkrepo}; do;
-	cd $kernels
-	cd ${krepo[$i]}
-	git pull &
+for index in ${!dirs[@]}; do
+	for repo in ${dirs[$index][@]}; do
+		cd $root/$index/$repo
+		git pull &
+	done
+	wait
 done
-wait
-
-
-for i in {0..$nbrepo}; do;
-	cd $buildsystems
-	cd ${brepo[$i]} 
-	git pull &
-done
-wait
-
-
-for i in {0..$nvrepo}; do;
-	cd $virtualization
-	cd ${vrepo[$i]} 
-	git pull &
-done
-wait
-
-
-for i in {0..$nurepo}; do;
-	cd $userland
-	cd ${urepo[$i]} 
-	git pull &
-done
-wait
-
-
-for i in {0..$ndsrepo}; do;
-	cd $dstor
-	cd ${dsrepo[$i]}
-	git pull &
-done
-wait
