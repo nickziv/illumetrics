@@ -8,6 +8,7 @@
 
 #
 # Copyright (c) 2014, Nick Zivkovic
+# Copyright (c) 2014, Serapheim Dimitropoulos
 #
 
 #
@@ -23,49 +24,17 @@
 source ./common_dirs.ksh
 source ./common_repo_dirs.ksh
 
+for index in ${!dirs[@]}; do
+	for repo in ${dirs[$index][@]}; do
+		cd $root/$index/$repo
+		mkdir $commit_logs/$index
 
-for i in {0..$nkrepo}; do;
-	cd $kernels
-	cd ${krepo[$i]}
-	mkdir $commit_logs/kernels
-	$tools/git_log_json.ksh > $commit_logs/kernels/${krepo[$i]}_log &
-	$tools/git_log_numstat_json.ksh > $commit_logs/kernels/${krepo[$i]}_numstat &
-done
+		$tools/git_log_json.ksh > $commit_logs/$index/${repo}_log &
+ 		$tools/git_log_numstat_json.ksh > $commit_logs/$index/${repo}_numstat &
 
-
-for i in {0..$nbrepo}; do;
-	cd $buildsystems
-	cd ${brepo[$i]} 
-	mkdir $commit_logs/buildsystems
-	$tools/git_log_json.ksh > $commit_logs/buildsystems/${brepo[$i]}_log &
-	$tools/git_log_numstat_json.ksh > $commit_logs/buildsystems/${brepo[$i]}_numstat &
-done
-
-
-for i in {0..$nvrepo}; do;
-	cd $virtualization
-	cd ${vrepo[$i]} 
-	mkdir $commit_logs/virtualization
-	$tools/git_log_json.ksh > $commit_logs/virtualization/${vrepo[$i]}_log &
-	$tools/git_log_numstat_json.ksh > $commit_logs/virtualization/${vrepo[$i]}_numstat &
-done
-
-
-for i in {0..$nurepo}; do;
-	cd $userland
-	cd ${urepo[$i]} 
-	mkdir $commit_logs/userland
-	$tools/git_log_json.ksh > $commit_logs/userland/${urepo[$i]}_log &
-	$tools/git_log_numstat_json.ksh > $commit_logs/userland/${urepo[$i]}_numstat &
-done
-
-
-for i in {0..$ndsrepo}; do;
-	cd $dstor
-	cd ${dsrepo[$i]}
-	mkdir $commit_logs/dstor
-	$tools/git_log_json.ksh > $commit_logs/dstor/${dsrepo[$i]}_log &
-	$tools/git_log_numstat_json.ksh > $commit_logs/dstor/${dsrepo[$i]}_numstat &
+		break
+	done
+	break
 done
 
 #
@@ -76,48 +45,17 @@ wait
 #
 # And now we merge the the pairs into a single file.
 #
-for i in {0..$nkrepo}; do;
-	cd $kernels
-	cd ${krepo[$i]}
-	node $tools/merge.js $commit_logs/kernels/${krepo[$i]}_log \
-		$commit_logs/kernels/${krepo[$i]}_numstat > \
-		$commit_logs/kernels/${krepo[$i]} &
-done
+for index in ${!dirs[@]}; do
+	for repo in ${dirs[$index][@]}; do
+		cd $root/$index/$repo
 
+		node $tools/merge.js $commit_logs/$index/${repo}_log \
+			$commit_logs/$index/${repo}_numstat > \
+			$commit_logs/$index/${repo} &
 
-for i in {0..$nbrepo}; do;
-	cd $buildsystems
-	cd ${brepo[$i]} 
-	node $tools/merge.js $commit_logs/buildsystems/${brepo[$i]}_log \
-		$commit_logs/buildsystems/${brepo[$i]}_numstat > \
-		$commit_logs/buildsystems/${brepo[$i]} &
-done
-
-
-for i in {0..$nvrepo}; do;
-	cd $virtualization
-	cd ${vrepo[$i]} 
-	node $tools/merge.js $commit_logs/virtualization/${vrepo[$i]}_log \
-		$commit_logs/virtualization/${vrepo[$i]}_numstat > \
-		$commit_logs/virtualization/${vrepo[$i]} &
-done
-
-
-for i in {0..$nurepo}; do;
-	cd $userland
-	cd ${urepo[$i]} 
-	node $tools/merge.js $commit_logs/userland/${urepo[$i]}_log \
-		$commit_logs/userland/${urepo[$i]}_numstat > \
-		$commit_logs/userland/${urepo[$i]} &
-done
-
-
-for i in {0..$ndsrepo}; do;
-	cd $dstor
-	cd ${dsrepo[$i]}
-	node $tools/merge.js $commit_logs/dstor/${dsrepo[$i]}_log \
-		$commit_logs/dstor/${dsrepo[$i]}_numstat > \
-		$commit_logs/dstor/${dsrepo[$i]} &
+		break
+	done
+	break
 done
 
 wait
@@ -127,46 +65,14 @@ exit
 #
 # And now we remove the no-longer-needed pairs.
 #
+for index in ${!dirs[@]}; do
+	for repo in ${dirs[$index][@]}; do
+		cd $root/$index/$repo
 
-for i in {0..$nkrepo}; do;
-	cd $kernels
-	cd ${krepo[$i]}
-	rm $commit_logs/kernels/${krepo[$i]}_log
-	rm $commit_logs/kernels/${krepo[$i]}_numstat
-done
+		rm $commit_logs/$index/${repo}_log
+		rm $commit_logs/$index/${repo}_numstat
 
-
-for i in {0..$nbrepo}; do;
-	cd $buildsystems
-	cd ${brepo[$i]} 
-	mkdir $commit_logs/buildsystems
-	rm $commit_logs/buildsystems/${brepo[$i]}_log
-	rm $commit_logs/buildsystems/${brepo[$i]}_numstat
-done
-
-
-for i in {0..$nvrepo}; do;
-	cd $virtualization
-	cd ${vrepo[$i]} 
-	mkdir $commit_logs/virtualization
-	rm $commit_logs/virtualization/${vrepo[$i]}_log
-	rm $commit_logs/virtualization/${vrepo[$i]}_numstat
-done
-
-
-for i in {0..$nurepo}; do;
-	cd $userland
-	cd ${urepo[$i]} 
-	mkdir $commit_logs/userland
-	rm $commit_logs/userland/${urepo[$i]}_log
-	rm $commit_logs/userland/${urepo[$i]}_numstat
-done
-
-
-for i in {0..$ndsrepo}; do;
-	cd $dstor
-	cd ${dsrepo[$i]}
-	mkdir $commit_logs/dstor
-	rm $commit_logs/dstor/${dsrepo[$i]}_log
-	rm $commit_logs/dstor/${dsrepo[$i]}_numstat
+		break
+	done
+	break
 done
