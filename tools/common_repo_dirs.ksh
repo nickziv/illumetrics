@@ -8,6 +8,7 @@
 
 #
 # Copyright (c) 2014, Nick Zivkovic
+# Copyright (c) 2014, Serapheim Dimitropoulos
 #
 
 #
