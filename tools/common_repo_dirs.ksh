@@ -21,19 +21,18 @@ configs=$root/configs
 #
 # The following loop creates an associative array of the
 # following structure:
-# dirs["..(path to root)../compiler"][0] -> "gcc"
-# dirs["..(path to root)../kernel"][0]  -> "illumos-gate"
-# dirs["..(path to root)../kernel"][1]  -> "illumos-core"
+# dirs["compiler"][0] -> "gcc"
+# dirs["kernel"][0]  -> "illumos-gate"
+# dirs["kernel"][1]  -> "illumos-core"
 # etc...
 #
 typeset -A dirs
 for list_file in `ls $configs`; do
 	clean_name=$(echo $list_file | sed s/\.list//g)
-	dir_name=$root/$clean_name
 
 	i=0
 	for line in `cat $configs/$list_file`; do
-		dirs[$dir_name][$i]=$(echo $line | cut -d '/' -f 5- | sed s/\.git//g)
+		dirs[$clean_name][$i]=$(echo $line | cut -d '/' -f 5- | sed s/\.git//g)
 		i=$(( $i+1 ))
 	done
 done
