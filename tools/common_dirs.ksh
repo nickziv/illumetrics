@@ -18,24 +18,6 @@ root=$(pwd)/../
 tools=$root/tools
 configs=$root/configs
 
-#illumos kernel branches
-kernels=$root/kernels/
-#illumos build systems
-buildsystems=$root/buildsystems/
-#illumos virtualization addons (like kvm or xen)
-virtualization=$root/virtualization/
-#illumos userland repos
-userland=$root/userland/
-#illumos documentation
-docs=$root/docs/
-#c-compiler 'ports' (like gcc and eventually clang)
-cc=$root/cc/
-#cloudy stuff built on illumos
-cloud=$root/cloud/
-#distributed storage stuff built on illumos
-dstor=$root/dstor/
-
 data=$root/data/
-
 commit_logs=$root/data/commit_logs/
 stats=$root/stats/
