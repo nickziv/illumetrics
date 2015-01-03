@@ -16,37 +16,23 @@
 #
 
 root=$(pwd)/../
-#illumos kernel branches
-kernels=$root/kernels/
-#illumos build systems
-buildsystems=$root/buildsystems/
-#illumos virtualization addons (like kvm or xen)
-virtualization=$root/virtualization/
-#illumos userland repos
-userland=$root/userland/
-#illumos documentation
-docs=$root/docs/
-#c-compiler 'ports' (like gcc and eventually clang)
-cc=$root/cc/
-#cloudy stuff built on illumos
-cloud=$root/cloud/
-#distributed storage stuff built on illumos
-dstor=$root/dstor/
+configs=$root/configs
 
-krepo=( $(ls $kernels) )
-nkrepo=${#krepo[@]}
+#
+# The following loop creates an associative array of the
+# following structure:
+# dirs["compiler"][0] -> "gcc"
+# dirs["kernel"][0]   -> "illumos-gate"
+# dirs["kernel"][1]   -> "illumos-core"
+# etc...
+#
+typeset -A dirs
+for list_file in `ls $configs`; do
+	clean_name=$(echo $list_file | sed s/\.list//g)
 
-brepo=( $(ls $buildsystems) )
-nbrepo=${#brepo[@]}
-
-vrepo=( $(ls $virtualization) )
-nvrepo=${#vrepo[@]}
-
-urepo=( $(ls $userland) )
-nurepo=${#urepo[@]}
-
-ccrepo=( $(ls $cc) )
-nccrepo=${#ccrepo[@]}
-
-dsrepo=( $(ls $dstor) )
-ndsrepo=${#dsrepo[@]}
+	i=0
+	for line in `cat $configs/$list_file`; do
+		dirs[$clean_name][$i]=$(echo $line | cut -d '/' -f 5- | sed s/\.git//g)
+		i=$(( $i+1 ))
+	done
+done
