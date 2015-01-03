@@ -12,13 +12,8 @@
 
 
 #
-# This script converts every repository's commit log into a json file.  First,
-# we create two JSON files. The first is a JSON representation of what you'd
-# see if you did `git log`. The second is a JSON representation of what you'd
-# see if you did `git log --numstat`, except the second contains _only_ the
-# stats. When we get all of these files, we merge them into a single file. We
-# leave all of the files behind, as we will end up over-writing them anyway, if
-# we run this script again.
+# This script runs statistics-gathering commands on the json commit-logs, and
+# stores them in the directory.
 #
 
 source ./common_dirs.ksh
