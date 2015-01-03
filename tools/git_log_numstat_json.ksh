@@ -11,7 +11,7 @@
 #
 
 #
-# This turns the git log into a json object.
+# This turns the git log (with numstat) into a json object.
 #
 
 git log \

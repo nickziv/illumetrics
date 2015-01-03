@@ -12,7 +12,7 @@
 #
 
 #
-# This script fetches the predetermined repos into this directory.
+# This script lists repository directories.
 #
 
 root=$(pwd)/../

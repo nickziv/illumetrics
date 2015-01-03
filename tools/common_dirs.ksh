@@ -11,7 +11,7 @@
 #
 
 #
-# This script fetches the predetermined repos into this directory.
+# This script lists common directories.
 #
 
 root=$(pwd)/../
