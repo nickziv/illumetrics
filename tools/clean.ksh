@@ -25,3 +25,4 @@ rm -rf $cc
 rm -rf $dstor
 rm -rf $data
 rm -rf $commit_logs
+rm -rf errlogs
