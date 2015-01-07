@@ -28,7 +28,7 @@ for index in "${!dirs[@]}"; do
 	mkdir $full_path
 	cd $full_path
 	for i in $(cat ${configs}/$list_file); do
-		git clone $i & 2> /dev/null
+		git clone $i 2> /dev/null &
 	done
-	wait
 done
+wait
