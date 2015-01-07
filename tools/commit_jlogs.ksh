@@ -55,15 +55,3 @@ done
 wait
 
 exit
-
-#
-# And now we remove the no-longer-needed pairs.
-#
-for index in ${!dirs[@]}; do
-	for repo in ${dirs[$index][@]}; do
-		cd $root/$index/$repo
-
-		rm $commit_logs/$index/${repo}_log
-		rm $commit_logs/$index/${repo}_numstat
-	done
-done
