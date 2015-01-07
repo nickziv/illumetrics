@@ -20,4 +20,3 @@ configs=$root/configs
 
 data=$root/data/
 commit_logs=$root/data/commit_logs/
-stats=$root/stats/
