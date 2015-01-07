@@ -1,3 +1,13 @@
 git://github.com/joyent/illumos-extra.git
 git://github.com/Nexenta/nza-userland.git
 git://github.com/illumos/illumos-userland.git
+git://github.com/tribblix/build.git
+git://github.com/tribblix/tribblix-build.git
+git://github.com/tribblix/zap.git
+git://github.com/tribblix/overlays.git
+git://github.com/tribblix/ips2svr4.git
+git://github.com/OpenIndiana/oi-userland.git
+git://github.com/OpenIndiana/pkg5.git
+git://github.com/OpenIndiana/nwam-manager.git
+git://github.com/OpenIndiana/slim_source.git
+git://github.com/OpenIndiana/time-slider.git
