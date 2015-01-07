@@ -25,14 +25,17 @@ cd tools
 To get some stats:
 
 cd tools
-Rscript old_vs_new_guard.R ../data/commit_logs/kernels/illumos-gate > OUTPUT_FILE
+./repo_stats.ksh
 
-Or any other R-script in tools, besided common.R (which does nothing).
+This will distill the JSON commit logs into independent commit logs for each
+author, to facilitate easier (and more parallelizable) per-author analysis.
+Also creates an author summary. All output is in JSON, so it can be consumed by
+additional custom scripts. The output is stored in:
 
-The scripts aren't very helpful yet, as they're not documented. The idea is to
-document all the functions in common.R, so that one can make their own scripts.
-My profuse apologies for the lack of documentation or adequate guidance. I will
-improve the situation as soon as possible.
+	data/commit_logs/<project type>/<repo name>_authors/
+
+The repo_stats.ksh script and supporting code are still in the works, and will
+be getting support for more advanced statistics. Also, ideas welcome!
 
 If something doesn't work, please open an issue on github, or email me at
 zivkovic.nick@gmail.com
