@@ -27,10 +27,13 @@ To get some stats:
 cd tools
 ./repo_stats.ksh
 
-This will distill the JSON commit logs into independent commit logs for each
-author, to facilitate easier (and more parallelizable) per-author analysis.
-Also creates an author summary. All output is in JSON, so it can be consumed by
-additional custom scripts. The output is stored in:
+You'll then want to go get a cup of coffee, and maybe play some video-games --
+it will take 15 minutes or so get the stats over all of the repositories. If you
+think that's too long, keep in mind that it used to take 51 minutes -- for
+_one_ repository. This will distill the JSON commit logs into independent
+commit logs for each author, to facilitate easier (and more parallelizable)
+per-author analysis.  Also creates an author summary. All output is in JSON, so
+it can be consumed by additional custom scripts. The output is stored in:
 
 	data/commit_logs/<project type>/<repo name>_authors/
 
