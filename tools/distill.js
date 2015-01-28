@@ -31,6 +31,9 @@ var commit_log = {};
  */
 function normalize_illumos_author(x)
 {
+	if (x == "Rich Lowe") {
+		return ("Richard Lowe");
+	}
         if (x == "ahl" || x == "Adam Leventhal") {
                 return ("Adam H. Leventhal");
         }

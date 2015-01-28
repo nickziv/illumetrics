@@ -27,7 +27,9 @@ source ./common_repo_dirs.ksh
 for index in ${!dirs[@]}; do
 	for repo in ${dirs[$index][@]}; do
 		cd $root/$index/$repo
-		mkdir $commit_logs/$index
+		mkdir $data 2> /dev/null
+		mkdir $commit_logs 2> /dev/null
+		mkdir $commit_logs/$index 2> /dev/null
 
 		$tools/git_log_json.ksh > $commit_logs/$index/${repo}_log &
  		$tools/git_log_numstat_json.ksh > $commit_logs/$index/${repo}_numstat &

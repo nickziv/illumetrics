@@ -26,6 +26,8 @@ mkdir errlog
 ./clean_author_data.ksh
 
 # First we distill.
+echo "Begin Distillation" > errlog/MASTER
+date >> errlog/MASTER;
 for index in ${!dirs[@]}; do
 	for repo in ${dirs[$index][@]}; do
 		$tools/distill.js $commit_logs/$index/$repo 2>\
@@ -40,7 +42,8 @@ maxjob=150
 njob=0
 
 # Then we summarize
-
+echo "Begin Summarization" >> errlog/MASTER
+date >> errlog/MASTER;
 for index in ${!dirs[@]}; do
 	for repo in ${dirs[$index][@]}; do
 		for A in $( ls $commit_logs/$index/$repo"_authors" ); do
@@ -61,3 +64,7 @@ done
 # Wait for any leftover jobs to finish.
 #
 wait;
+
+echo "Done" >> errlog/MASTER
+date >> errlog/MASTER;
+

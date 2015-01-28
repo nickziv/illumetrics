@@ -20,8 +20,8 @@ var util = require('util');
 var log_file = process.argv[2];
 var auth_dir = log_file.concat("_authors");
 var commit_log;
-
-
+var order_66 = new Date();
+order_66 = Date.parse("2010-08-13");
 
 
 
@@ -52,14 +52,22 @@ function file_stats(c)
 		//console.log(c);
 		s = c.stat[i];
 		if (filetouched[s.path] == null) {
-			console.log("Touched ", s.path);
 			summary.nfilesmod += 1;
 			filetouched[s.path] = true;
+			if (c.commitDate < order_66) {
+				summary.nfilesmod_pre_purge += 1;
+			}
 		}
 		summary.nlinesmod += s.insertions;
 		summary.nlinesadd += s.insertions;
 		summary.nlinesmod += s.deletions;
 		summary.nlinesrem += s.deletions;
+		if (c.commitDate < order_66) {
+			summary.nlinesmod_pre_purge += s.insertions;
+			summary.nlinesmod_pre_purge += s.deletions;
+			summary.nlinesadd_pre_purge += s.insertions;
+			summary.nlinesrem_pre_purge += s.deletions;
+		}
 		i++;
 	}
 }
@@ -100,6 +108,12 @@ function summarize(c, i, arr)
 	    summary.last_commit < c.commitDate) {
 		summary.last_commit = c.commitDate;
 	}
+	/*
+	 * We want to know how many of these commits occurred before the purge.
+	 */
+	if (c.commitDate < order_66) {
+		summary.ncommits_pre_purge += 1;
+	}
 	file_stats(c);
 }
 
@@ -111,10 +125,26 @@ function fill_out_summary(ignored, callback)
 	summary.nlinesmod = 0;
 	summary.nlinesadd = 0;
 	summary.nlinesrem = 0;
+	summary.nfilesmod_pre_purge = 0;
+	summary.nlinesmod_pre_purge = 0;
+	summary.nlinesadd_pre_purge = 0;
+	summary.nlinesrem_pre_purge = 0;
+	summary.ncommits_pre_purge = 0;
 	summary.ncommits = commit_log.length;
 	summary.ndist = summary.ncommits - 1;
 	commit_log.forEach(summarize);
 	summary.avg_dist = summary.avg_dist / summary.ndist;
+	if (summary.first_commit > order_66) {
+		summary.new_guard = true;
+		summary.survived_purge = true;
+	} else {
+		summary.new_guard = false;
+		if (summary.last_commit <= order_66) {
+			summary.survived_purge = false;
+		} else {
+			summary.survived_purge = true;
+		}
+	}
 	write_summary();
 	callback(null, null);
 }
